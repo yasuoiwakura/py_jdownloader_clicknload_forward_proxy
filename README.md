@@ -1,43 +1,46 @@
-# py_jdownloader_clicknload_forward_proxy
-Emulates a local JDownloader Click'nLoad listener to receive links but forwards them to a LAN instance instead
+# 🧩 py_jdownloader_clicknload_forward_proxy
 
-# Problem
-You moved jdownloader into a sandboxed environment (i.e. Docker on your NAS)
-The WebBrowser cannot reach local Click'n'Load anymore, browser extensions fail to forward the request and/or generate CORS errors.
-
-# Solution
-Provide a minimalistic listener that mimics the Click'N'Load server (without actually decrypting the links) that forwards the request to your docker instance. You can now turn off your workstation and leave the workload to your fileserver.
-
-# vibecoded?
-Yes but i needed to test several solutions and debug them so it might worth sharing to save you the hassle.
-
-# TODO (probably won't)
-Integrate a neat system try icon
-hide the console window
-
-# 🧩 Simple Python CORS Proxy
-
-Ein minimaler HTTP-Proxy-Server in **Python**, der **GET**- und **POST**-Anfragen an einen Zielserver weiterleitet  
-und dabei **CORS-Header** (`Access-Control-Allow-*`) automatisch hinzufügt.
-
-Ideal, wenn du im Browser lokal API-Anfragen testen willst, die sonst wegen CORS blockiert würden.
+A lightweight local **Click’n’Load proxy** for JDownloader that emulates the local listener and forwards requests to a remote (LAN or Docker) JDownloader instance.  
+Perfect for setups where your browser and JDownloader no longer share the same host.
 
 ---
 
-## 🚀 Features
+## 🧠 Problem
 
-- Leitet **GET**- und **POST**-Anfragen an eine Ziel-IP weiter  
-- Fügt automatisch **CORS-Header** hinzu  
-- Unterstützt **Preflight-Requests (OPTIONS)**  
-- Einfache Anpassung der Zieladresse  
-- Reines Python — keine externen Webserver nötig
+You moved JDownloader from your desktop/laptop to a sandboxed environment, for example, a [Docker container using jlesage/docker-jdownloader-2](https://github.com/jlesage/docker-jdownloader-2) on your NAS.
+Now your browser extensions can’t reach the local Click’n’Load port anymore, and you start seeing **CORS** or connection errors in your Browser Debugging Network tab.
 
 ---
 
-## 🧰 Voraussetzungen
+## 💡 Solution
 
-- Python ≥ 3.8  
-- Modul **requests** (falls nicht vorhanden, installieren mit:)
+Run this minimalistic Python proxy locally.  
+It mimics JDownloader’s Click’n’Load listener and forwards all requests to your LAN or Docker instance instead.  
 
-```bash
-pip install requests
+That way:
+- Browser extensions still work  
+- You can turn off your workstation  
+- The NAS does all the heavy lifting
+Works seamlessly with [jlesage/docker-jdownloader-2][1]
+
+
+---
+
+## ⚙️ Configuration
+
+Inside the script, you can adjust your target server:
+
+```python
+LISTEN_PORT = 9666  # local port to listen on
+TARGET_IP = "192.168.0.201"  # JDownloader container or NAS IP
+TARGET_PORT = 9666  # usually same as LISTEN_PORT
+
+
+## ❤️ Acknowledgements
+
+- [jlesage/docker-jdownloader-2](https://github.com/jlesage/docker-jdownloader-2) — for making it easy to run JDownloader in Docker
+- your fellow AI
+
+
+## links
+[1]: https://github.com/jlesage/docker-jdownloader-2
